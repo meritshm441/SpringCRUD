@@ -45,7 +45,7 @@ public class EmployeeController {
 	// http://localhost:8080/api/employees
 	@PostMapping("/employees")
 	Employee addEmployee(@RequestBody Employee employee) {
-		employee.setId(0);
+		employee.setId(null);
 		return empService.save(employee);
 	}
 
