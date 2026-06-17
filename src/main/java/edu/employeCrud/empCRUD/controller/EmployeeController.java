@@ -1,5 +1,6 @@
 package edu.employeCrud.empCRUD.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.employeCrud.empCRUD.dto.EmployeeDTO;
 import edu.employeCrud.empCRUD.entity.Employee;
 import edu.employeCrud.empCRUD.service.EmployeeService;
 
@@ -28,18 +30,22 @@ public class EmployeeController {
 
 	// http://localhost:8080/api/employees
 	@GetMapping("/employees")
-	List<Employee> getEMpList() {
-		return empService.findAll();
+	List<EmployeeDTO> getEMpList() {
+		List<EmployeeDTO> result = new ArrayList<>();
+		for (Employee emp : empService.findAll()) {
+			result.add(new EmployeeDTO(emp.getId(), emp.getFirstName(), emp.getLastName(), emp.getEmail()));
+		}
+		return result;
 	}
 
 	// http://localhost:8080/api/employees/{employeeId}
 	@GetMapping("/employees/{employeeId}")
-	Employee getEmployee(@PathVariable int employeeId) {
+	EmployeeDTO getEmployee(@PathVariable int employeeId) {
 		Employee employee = empService.findById(employeeId);
 		if (employee == null) {
 			throw new RuntimeException("Employee id not found - " + employeeId);
 		}
-		return employee;
+		return new EmployeeDTO(employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getEmail());
 	}
 
 	// http://localhost:8080/api/employees

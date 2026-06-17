@@ -1,6 +1,5 @@
 package edu.employeCrud.empCRUD.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,8 +26,7 @@ public class Job {
     @Column(name = "mode")
     private String mode;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "job", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "job", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     private List<Employee> employees;
 
     public Job() {
