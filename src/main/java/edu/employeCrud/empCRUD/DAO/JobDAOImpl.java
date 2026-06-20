@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import edu.employeCrud.empCRUD.entity.Job;
+import edu.employeCrud.empCRUD.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
@@ -43,8 +44,9 @@ public class JobDAOImpl implements JobDAO {
     @Override
     public void deleteById(int id) {
         Job job = entityManager.find(Job.class, id);
-        if (job != null) {
-            entityManager.remove(job);
+        if (job == null) {
+            throw new ResourceNotFoundException("Job id not found - " + id);
         }
+        entityManager.remove(job);
     }
 }

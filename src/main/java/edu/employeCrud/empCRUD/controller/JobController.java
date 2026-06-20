@@ -3,6 +3,8 @@ package edu.employeCrud.empCRUD.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,7 @@ public class JobController {
     public Job getJob(@PathVariable int jobId) {
         Job job = jobService.findById(jobId);
         if (job == null) {
-            throw new RuntimeException("Job id not found - " + jobId);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job id not found - " + jobId);
         }
         return job;
     }
@@ -55,7 +57,7 @@ public class JobController {
     public String deleteJob(@PathVariable int jobId) {
         Job job = jobService.findById(jobId);
         if (job == null) {
-            throw new RuntimeException("Job id not found - " + jobId);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job id not found - " + jobId);
         }
         jobService.deleteById(jobId);
         return "Deleted job id - " + jobId;

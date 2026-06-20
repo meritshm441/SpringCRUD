@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import edu.employeCrud.empCRUD.entity.Employee;
+import edu.employeCrud.empCRUD.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
@@ -19,9 +20,9 @@ public class EMployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public List<Employee> findAll() {
-		// creating custom query
+
 		TypedQuery<Employee> myQuery = entityManager.createQuery("from Employee", Employee.class);
-		// execute the query
+
 		List<Employee> result = myQuery.getResultList();
 		return result;
 	}
@@ -39,6 +40,9 @@ public class EMployeeDAOImpl implements EmployeeDAO {
 	@Override
 	public void deleteById(int id) {
 		Employee employee = entityManager.find(Employee.class, id);
+		if (employee == null) {
+			throw new ResourceNotFoundException("Employee id not found - " + id);
+		}
 		entityManager.remove(employee);
 	}
 
